@@ -23,7 +23,7 @@ A sleek, interactive tool that generates innovative SaaS business ideas based on
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/onwp/saas-idea-generator
 
 # Navigate to the project directory
 cd saas-idea-generator
