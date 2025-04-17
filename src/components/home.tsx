@@ -103,10 +103,36 @@ const Home = ({ hideHeader = false }: HomeProps) => {
     );
   };
 
-  const exportIdeas = (format: "pdf" | "csv") => {
-    // Mock export functionality
-    console.log(`Exporting ideas as ${format}`);
-    // In a real implementation, this would generate and download the file
+  const [isExporting, setIsExporting] = useState(false);
+
+  const exportIdeas = async (format: "pdf" | "csv") => {
+    try {
+      setIsExporting(true);
+
+      // Dynamically import export utilities to reduce initial bundle size
+      const { exportToPdf, exportToCsv } = await import("@/utils/exportUtils");
+
+      // Filter out ideas with favorite status if on favorites tab
+      const ideasToExport = ideas.filter(
+        (idea) => favorites.length === 0 || favorites.includes(idea.id),
+      );
+
+      if (ideasToExport.length === 0) {
+        console.error("No ideas to export");
+        return;
+      }
+
+      if (format === "pdf") {
+        exportToPdf(ideasToExport);
+      } else if (format === "csv") {
+        exportToCsv(ideasToExport);
+      }
+    } catch (error) {
+      console.error(`Error exporting ideas as ${format}:`, error);
+      // In a production app, you would show a toast notification here
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   return (
@@ -137,6 +163,7 @@ const Home = ({ hideHeader = false }: HomeProps) => {
             <IdeaResultsDisplay
               ideas={ideas}
               isLoading={isLoading}
+              isExporting={isExporting}
               onSaveIdea={toggleFavorite}
               onExport={exportIdeas}
               errors={results

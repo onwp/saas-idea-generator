@@ -27,6 +27,7 @@ interface Idea {
 interface IdeaResultsDisplayProps {
   ideas?: Idea[];
   isLoading?: boolean;
+  isExporting?: boolean;
   onSaveIdea?: (id: string) => void;
   onExport?: (format: "pdf" | "csv") => void;
   errors?: { source: string; message: string }[];
@@ -76,6 +77,7 @@ const IdeaResultsDisplay = ({
     },
   ],
   isLoading = false,
+  isExporting = false,
   onSaveIdea = () => {},
   onExport = () => {},
   errors = [],
@@ -92,19 +94,37 @@ const IdeaResultsDisplay = ({
         variant="outline"
         size="sm"
         onClick={() => onExport("pdf")}
-        disabled={displayIdeas.length === 0}
+        disabled={displayIdeas.length === 0 || isExporting}
       >
-        <Download className="mr-2 h-4 w-4" />
-        Export PDF
+        {isExporting ? (
+          <>
+            <span className="h-4 w-4 mr-2 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+            Exporting...
+          </>
+        ) : (
+          <>
+            <Download className="mr-2 h-4 w-4" />
+            Export PDF
+          </>
+        )}
       </Button>
       <Button
         variant="outline"
         size="sm"
         onClick={() => onExport("csv")}
-        disabled={displayIdeas.length === 0}
+        disabled={displayIdeas.length === 0 || isExporting}
       >
-        <Download className="mr-2 h-4 w-4" />
-        Export CSV
+        {isExporting ? (
+          <>
+            <span className="h-4 w-4 mr-2 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+            Exporting...
+          </>
+        ) : (
+          <>
+            <Download className="mr-2 h-4 w-4" />
+            Export CSV
+          </>
+        )}
       </Button>
     </div>
   );
