@@ -1,4 +1,4 @@
-# SaaS Idea Generator
+# Evreka - SaaS Idea Generator
 
 A sleek, interactive tool that generates innovative SaaS business ideas based on user inputs and market trends.
 
