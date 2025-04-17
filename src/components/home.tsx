@@ -10,8 +10,17 @@ import {
   GeneratedIdea,
   GenerationResult,
 } from "@/services/aiService";
+import {
+  HeaderSection,
+  containerStyles,
+  sectionStyles,
+} from "@/components/ui/common";
 
-const Home = () => {
+interface HomeProps {
+  hideHeader?: boolean;
+}
+
+const Home = ({ hideHeader = false }: HomeProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [ideas, setIdeas] = useState<
     Array<{
@@ -101,22 +110,19 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6 md:p-10">
+    <div className={`${containerStyles.fullWidth} min-h-screen p-6 md:p-10`}>
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-7xl mx-auto"
+        className={`${containerStyles.wide.replace("p-6", "")} ${sectionStyles.default}`}
       >
-        <header className="text-center mb-12">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-2">
-            SaaS Idea Generator
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Generate innovative SaaS business ideas tailored to your interests
-            and market preferences.
-          </p>
-        </header>
+        {!hideHeader && (
+          <HeaderSection
+            title="SaaS Idea Generator"
+            description="Generate innovative SaaS business ideas tailored to your interests and market preferences."
+          />
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-4">

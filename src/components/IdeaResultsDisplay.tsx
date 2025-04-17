@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Download, Save, AlertCircle } from "lucide-react";
+import { Download, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import IdeaCard from "./IdeaCard";
+import {
+  containerStyles,
+  buttonContainerStyles,
+  cardGridStyles,
+  SectionHeader,
+  EmptyState,
+  LoadingState,
+} from "@/components/ui/common";
 
 interface Idea {
   id: string;
@@ -84,31 +85,33 @@ const IdeaResultsDisplay = ({
   const favoriteIdeas = ideas.filter((idea) => idea.isFavorite);
   const displayIdeas = activeTab === "all" ? ideas : favoriteIdeas;
 
+  // Export buttons component
+  const ExportButtons = () => (
+    <div className={buttonContainerStyles.default}>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => onExport("pdf")}
+        disabled={displayIdeas.length === 0}
+      >
+        <Download className="mr-2 h-4 w-4" />
+        Export PDF
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => onExport("csv")}
+        disabled={displayIdeas.length === 0}
+      >
+        <Download className="mr-2 h-4 w-4" />
+        Export CSV
+      </Button>
+    </div>
+  );
+
   return (
-    <div className="w-full max-w-7xl mx-auto bg-background p-6 rounded-lg">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Generated Ideas</h2>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onExport("pdf")}
-            disabled={displayIdeas.length === 0}
-          >
-            <Download className="mr-2 h-4 w-4" />
-            Export PDF
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onExport("csv")}
-            disabled={displayIdeas.length === 0}
-          >
-            <Download className="mr-2 h-4 w-4" />
-            Export CSV
-          </Button>
-        </div>
-      </div>
+    <div className={containerStyles.wide}>
+      <SectionHeader title="Generated Ideas" rightContent={<ExportButtons />} />
 
       {errors.length > 0 && (
         <div className="mb-6 space-y-3">
@@ -132,20 +135,15 @@ const IdeaResultsDisplay = ({
 
         <TabsContent value="all" className="mt-0">
           {isLoading ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-            </div>
+            <LoadingState />
           ) : ideas.length === 0 ? (
             <Card>
-              <CardContent className="flex flex-col items-center justify-center h-64">
-                <p className="text-muted-foreground text-center">
-                  No ideas generated yet. Fill out the form and click Generate
-                  to get started!
-                </p>
+              <CardContent>
+                <EmptyState message="No ideas generated yet. Fill out the form and click Generate to get started!" />
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className={cardGridStyles.default}>
               {ideas.map((idea) => (
                 <IdeaCard
                   key={idea.id}
@@ -166,14 +164,12 @@ const IdeaResultsDisplay = ({
         <TabsContent value="favorites" className="mt-0">
           {favoriteIdeas.length === 0 ? (
             <Card>
-              <CardContent className="flex flex-col items-center justify-center h-64">
-                <p className="text-muted-foreground text-center">
-                  No favorite ideas yet. Save ideas you like to see them here!
-                </p>
+              <CardContent>
+                <EmptyState message="No favorite ideas yet. Save ideas you like to see them here!" />
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className={cardGridStyles.default}>
               {favoriteIdeas.map((idea) => (
                 <IdeaCard
                   key={idea.id}

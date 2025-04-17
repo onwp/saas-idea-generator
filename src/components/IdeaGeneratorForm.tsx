@@ -12,6 +12,12 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Settings } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  containerStyles,
+  sectionStyles,
+  SectionHeader,
+  buttonContainerStyles,
+} from "@/components/ui/common";
 
 interface IdeaGeneratorFormProps {
   onGenerateIdeas: (formData: FormData, selectedServices: string[]) => void;
@@ -109,19 +115,21 @@ const IdeaGeneratorForm = ({
   ];
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-6 bg-card rounded-xl border shadow-sm">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-center">
-          Generate Your SaaS Idea
-        </h2>
-        <Button variant="outline" size="sm" onClick={onOpenSettings}>
-          <Settings className="h-4 w-4 mr-2" />
-          API Settings
-        </Button>
-      </div>
+    <div className={containerStyles.default}>
+      <SectionHeader
+        title="Generate Your SaaS Idea"
+        rightContent={
+          <div className={buttonContainerStyles.default}>
+            <Button variant="outline" size="sm" onClick={onOpenSettings}>
+              <Settings className="h-4 w-4 mr-2" />
+              API Settings
+            </Button>
+          </div>
+        }
+      />
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-4">
+      <form onSubmit={handleSubmit} className={sectionStyles.default}>
+        <div className={sectionStyles.form}>
           <div>
             <Label htmlFor="industry">Industry</Label>
             <Select

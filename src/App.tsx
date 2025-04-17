@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import { useRoutes, Routes, Route } from "react-router-dom";
-import Home from "./components/home";
 import LandingPage from "./components/LandingPage";
 import PrivacyPolicy from "./components/legal/PrivacyPolicy";
 import UsagePolicy from "./components/legal/UsagePolicy";
@@ -12,7 +11,6 @@ function App() {
       <>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/app" element={<Home />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/usage" element={<UsagePolicy />} />
           {import.meta.env.VITE_TEMPO === "true" && (
